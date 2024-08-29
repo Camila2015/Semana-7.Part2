@@ -1,3 +1,8 @@
+import os
+
+# Instalar la librería language_tool_python si no está instalada
+os.system('pip install language-tool-python')
+
 import streamlit as st
 from textblob import TextBlob
 import language_tool_python
