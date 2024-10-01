@@ -36,20 +36,22 @@ def cambiar_fondo_rojo():
         """, unsafe_allow_html=True)
 
 # Pregunta al usuario cómo se siente
-st.subheader("¿Cómo te sientes hoy?")
-emocion = st.radio("Elige una emoción:", ('Triste', 'Feliz', 'Enojado'))
+st.subheader("¿Cómo te sientes hoy? (Escribe: feliz, triste o enojado)")
+emocion = st.text_input("Escribe tu emoción:").strip().lower()
 
 # Mostrar respuesta creativa según la emoción
-if emocion == 'Triste':
+if emocion == 'triste':
     cambiar_fondo_azul()
     st.write("😢 Lo siento, parece que estás triste. ¡Espero que pronto te sientas mejor!")
-elif emocion == 'Feliz':
+elif emocion == 'feliz':
     cambiar_fondo_rosado()
     st.balloons()  # Animación de globos
     st.write("😊 ¡Qué bien! Estás feliz, sigue con esa actitud positiva.")
-elif emocion == 'Enojado':
+elif emocion == 'enojado':
     cambiar_fondo_rojo()
     st.write("😡 Parece que estás enojado. ¡Respira hondo, todo estará bien pronto!")
+elif emocion:  # Si escribe algo diferente
+    st.write("Por favor, escribe solo: feliz, triste o enojado.")
 
 # Expander para el análisis de texto
 with st.expander('Analizar Polaridad y Subjetividad en un texto'):
