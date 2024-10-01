@@ -1,62 +1,57 @@
 import streamlit as st
 from textblob import TextBlob
-from googletrans import Translator
 
-translator = Translator()
-st.title('Uso de TextBlob')
+# Título de la aplicación
+st.title('Detector de Emociones')
 
-st.subheader("Por favor escribe en el campo de texto la frase que deseas analizar")
-with st.sidebar:
-    st.subheader("Polaridad y Subjetividad")
-    st.write("""
-        **Polaridad**: Indica si el sentimiento expresado en el texto es positivo, negativo o neutral.
-        Su valor oscila entre -1 (muy negativo) y 1 (muy positivo), con 0 representando un sentimiento neutral.
-
-        **Subjetividad**: Mide cuánto del contenido es subjetivo (opiniones, emociones, creencias) frente a objetivo
-        (hechos). Va de 0 a 1, donde 0 es completamente objetivo y 1 es completamente subjetivo.
-    """)
-
-# Función creativa para cambiar el estilo según la polaridad
-def cambiar_fondo_positivo():
+# Funciones para cambiar el fondo según la emoción
+def cambiar_fondo_azul():
     st.markdown(
         """
         <style>
         .stApp {
-            background-color: #DFF7DF;
+            background-color: #ADD8E6;
         }
         </style>
         """, unsafe_allow_html=True)
 
-def cambiar_fondo_negativo():
+def cambiar_fondo_rosado():
     st.markdown(
         """
         <style>
         .stApp {
-            background-color: #F8D7DA;
+            background-color: #FFB6C1;
         }
         </style>
         """, unsafe_allow_html=True)
 
-def cambiar_fondo_neutral():
+def cambiar_fondo_rojo():
     st.markdown(
         """
         <style>
         .stApp {
-            background-color: #F3F4F6;
+            background-color: #FF6347;
         }
         </style>
         """, unsafe_allow_html=True)
 
-def mensaje_creativo_positivo():
-    st.balloons()
-    st.write("🎉 ¡El mundo es un lugar maravilloso, sigue con esa energía positiva!")
+# Pregunta al usuario cómo se siente
+st.subheader("¿Cómo te sientes hoy?")
+emocion = st.radio("Elige una emoción:", ('Triste', 'Feliz', 'Enojado'))
 
-def mensaje_creativo_negativo():
-    st.write("🌧️ A veces las nubes oscuras nos envuelven, pero siempre hay un rayo de sol esperando.")
+# Mostrar respuesta creativa según la emoción
+if emocion == 'Triste':
+    cambiar_fondo_azul()
+    st.write("😢 Lo siento, parece que estás triste. ¡Espero que pronto te sientas mejor!")
+elif emocion == 'Feliz':
+    cambiar_fondo_rosado()
+    st.balloons()  # Animación de globos
+    st.write("😊 ¡Qué bien! Estás feliz, sigue con esa actitud positiva.")
+elif emocion == 'Enojado':
+    cambiar_fondo_rojo()
+    st.write("😡 Parece que estás enojado. ¡Respira hondo, todo estará bien pronto!")
 
-def mensaje_creativo_neutral():
-    st.write("🌀 La calma puede ser un gran lugar para reflexionar y encontrar balance.")
-
+# Expander para el análisis de texto
 with st.expander('Analizar Polaridad y Subjetividad en un texto'):
     text1 = st.text_area('Escribe por favor: ')
     if text1:
@@ -64,21 +59,11 @@ with st.expander('Analizar Polaridad y Subjetividad en un texto'):
         
         st.write('Polarity: ', round(blob.sentiment.polarity, 2))
         st.write('Subjectivity: ', round(blob.sentiment.subjectivity, 2))
-        x = round(blob.sentiment.polarity, 2)
 
-        # Creatividad según el sentimiento
-        if x >= 0.5:
-            cambiar_fondo_positivo()
-            mensaje_creativo_positivo()
-        elif x <= -0.5:
-            cambiar_fondo_negativo()
-            mensaje_creativo_negativo()
-        else:
-            cambiar_fondo_neutral()
-            mensaje_creativo_neutral()
-
+# Expander para corrección de texto en inglés
 with st.expander('Corrección en inglés'):
     text2 = st.text_area('Escribe por favor: ', key='4')
     if text2:
         blob2 = TextBlob(text2)
         st.write(blob2.correct())
+
