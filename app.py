@@ -4,7 +4,7 @@ from textblob import TextBlob
 # Título de la aplicación
 st.title('Detector de Emociones')
 
-# Funciones para cambiar el fondo según la emoción
+# Funciones para cambiar el fondo y agregar animaciones según la emoción
 def cambiar_fondo_azul():
     st.markdown(
         """
@@ -35,6 +35,13 @@ def cambiar_fondo_rojo():
         </style>
         """, unsafe_allow_html=True)
 
+# Animación para la rabia: barra de progreso
+def animacion_rabia():
+    st.write("😡 Tu rabia está aumentando...")
+    progress_bar = st.progress(0)
+    for i in range(100):
+        progress_bar.progress(i + 1)
+
 # Pregunta al usuario cómo se siente
 st.subheader("¿Cómo te sientes hoy? (Escribe: feliz, triste o enojado)")
 emocion = st.text_input("Escribe tu emoción:").strip().lower()
@@ -42,13 +49,15 @@ emocion = st.text_input("Escribe tu emoción:").strip().lower()
 # Mostrar respuesta creativa según la emoción
 if emocion == 'triste':
     cambiar_fondo_azul()
+    st.snow()  # Animación de nieve para tristeza
     st.write("😢 Lo siento, parece que estás triste. ¡Espero que pronto te sientas mejor!")
 elif emocion == 'feliz':
     cambiar_fondo_rosado()
-    st.balloons()  # Animación de globos
+    st.balloons()  # Animación de globos para felicidad
     st.write("😊 ¡Qué bien! Estás feliz, sigue con esa actitud positiva.")
 elif emocion == 'enojado':
     cambiar_fondo_rojo()
+    animacion_rabia()  # Animación de barra de progreso para la rabia
     st.write("😡 Parece que estás enojado. ¡Respira hondo, todo estará bien pronto!")
 elif emocion:  # Si escribe algo diferente
     st.write("Por favor, escribe solo: feliz, triste o enojado.")
@@ -68,4 +77,3 @@ with st.expander('Corrección en inglés'):
     if text2:
         blob2 = TextBlob(text2)
         st.write(blob2.correct())
-
